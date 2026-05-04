@@ -1,8 +1,6 @@
 import numpy as np
 
-
-
-class neural_network:
+class neural_networksel:
     
     def __init__(self,input_size,hidden_size,output_size):
         
