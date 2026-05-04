@@ -4,7 +4,7 @@ from tensorflow.keras.utils import to_categorical
 from  neural_network import neural_networksel
 
 
-(x_train,y_train),(x_test,y_test)=mnist.data_loader()
+(x_train,y_train),(x_test,y_test)=mnist.load_data()
 
 x_train = x_train.reshape(-1, 784).astype("float32") / 255
 x_test = x_test.reshape(-1, 784).astype("float32") / 255   # 0 1 değerlerine getir
@@ -29,7 +29,7 @@ for epoch in range(epoch):
 
     output=model.forward_pass(x_train) #ileri besleme ile alınan ilk çıkış
 
-    loss=model.compute_loss(y_test,output)
+    loss=model.compute_loss(y_train,output)
 
     dw1,dw2,db1,db2=model.backward_pass(x_train,y_train)
 
