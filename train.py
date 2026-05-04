@@ -23,21 +23,29 @@ def accuaracy(y_predict,y_true):
 
 
 epoch=50
+batch_size = 64
 learning_rate=0.1
 
 for epoch in range(epoch):
 
-    output=model.forward_pass(x_train) #ileri besleme ile alınan ilk çıkış
+    permutation = np.random.permutation(x_train.shape[0])
+    x_train_shuffled = x_train[permutation]
+    y_train_shuffled = y_train[permutation]
 
-    loss=model.compute_loss(y_train,output)
+    for i in range(0, x_train.shape[0], batch_size):
 
-    dw1,dw2,db1,db2=model.backward_pass(x_train,y_train)
+        x_batch = x_train_shuffled[i : i + batch_size]
+        y_batch = y_train_shuffled[i : i + batch_size]
 
-    model.update_weight(dw1, dw2, db1, db2, learning_rate)
+        output = model.forward_pass(x_batch)
+        dw1, dw2, db1, db2 = model.backward_pass(x_batch, y_batch)
+        model.update_weight(dw1, dw2, db1, db2, learning_rate)
+    
 
-    if epoch % 5 == 0:
-        acc = accuaracy(y_train, output)
-        print(f"Epoch {epoch} | Loss: {loss:.4f} | Accuracy: {acc:.4f}")
+    final_output = model.forward_pass(x_train)
+    loss = model.compute_loss(y_train, final_output)
+    acc = accuaracy(y_train, final_output)
+    print(f"Epoch {epoch} | Loss: {loss:.4f} | Accuracy: {acc:.4f}")
 
 
 
